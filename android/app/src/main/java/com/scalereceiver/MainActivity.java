@@ -1,6 +1,8 @@
 package com.scalereceiver;
 
 import com.facebook.react.ReactActivity;
+import com.joshblour.reactnativepermissions.ReactNativePermissionsPackage;
+import com.polidea.reactnativeble.BlePackage;
 
 public class MainActivity extends ReactActivity {
 
