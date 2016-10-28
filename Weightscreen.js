@@ -10,7 +10,8 @@ import {
   ActivityIndicator,
   Image
 } from 'react-native';
-import { BleManager } from 'react-native-ble-plx';
+
+const BTFacade = require('./BTFacade');
 
 var styles = StyleSheet.create({
   description: {
@@ -49,7 +50,7 @@ class Weightscreen extends Component {
     this.state = {
       lastWeight: 1,
     };
-    this.bluetooth = new BleManager();
+    this.bluetooth = new BTFacade();
   }
     
   onButtonPressed() {
@@ -59,16 +60,21 @@ class Weightscreen extends Component {
   }
 
   onDeviceDiscover(error, scannedDevice) {
-      console.log(error);
-      console.log(scannedDevice);
+      if (scannedDevice.name == 'Scale') {
+        console.log(scannedDevice);
+        var weightEncoded = scannedDevice.serviceData['0000181d-0000-1000-8000-00805f9b34fb'];
+        var bytes = atob(weightEncoded);
+        var intValue = bytes.charCodeAt(1)*256+bytes.charCodeAt(0);
+        var weight = intValue*0.005;
+        console.log(weight);
+        this.setState({
+          lastWeight: weight
+        })
+      }
   }
     
   componentDidMount() {
-      var btOptions = {
-          "allowDuplicates": true, // iOS: Devices will be scanned more frequently if true, by default false
-          "autoConnect": false,     // Android: allows to connect to devices which are not in range.
-      }
-      this.bluetooth.startDeviceScan(null, btOptions, this.onDeviceDiscover);
+      this.bluetooth.startDeviceScan(this.onDeviceDiscover.bind(this));
   }
       
   componentWillUnmount() {
