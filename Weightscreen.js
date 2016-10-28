@@ -19,6 +19,12 @@ var styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     color: '#656565'
+  }, 
+  weight: {
+    marginBottom: 20,
+    fontSize: 60,
+    textAlign: 'center',
+    color: '#656565'
   },
 buttonText: {
   fontSize: 18,
@@ -48,7 +54,7 @@ class Weightscreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastWeight: 1,
+      lastWeight: undefined,
     };
     this.bluetooth = new BTFacade();
   }
@@ -91,12 +97,8 @@ class Weightscreen extends Component {
         <Text style={styles.description}>
           Waiting for signal...
         </Text>
-        <TouchableHighlight style={styles.button} underlayColor='#99d9f4'
-          onPress={this.onButtonPressed.bind(this)}>
-          <Text style={styles.buttonText}>Go</Text>
-        </TouchableHighlight>
-        <Text style={styles.description}>
-            {this.state.lastWeight}
+        <Text style={styles.weight}>
+            {this.state.lastWeight == undefined ? "" : this.state.lastWeight.toFixed(2)}
         </Text>
       </View>
     );
