@@ -15,10 +15,10 @@ class BTFacade {
                 console.log('bluetooth permissions:');
                 console.log(response);
                 this.permission = response;
-                if (response == 'authorized') {
-                    this._waitForPoweredOnThenScan();
-                } else {
+                if (response == 'denied') {
                     this._alertForPermission();
+                } else {
+                    this._waitForPoweredOnThenScan();
                 }
             })
     }
