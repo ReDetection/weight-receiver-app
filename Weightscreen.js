@@ -64,6 +64,10 @@ class Weightscreen extends Component {
         console.log(scannedDevice);
         var weightEncoded = scannedDevice.serviceData['0000181d-0000-1000-8000-00805f9b34fb'];
         var bytes = atob(weightEncoded);
+        if (bytes.charCodeAt(1) >= 128) {
+          this.setState({ lastWeight: 0.0 })
+          return
+        }
         var intValue = bytes.charCodeAt(1)*256+bytes.charCodeAt(0);
         var weight = intValue*0.005;
         console.log(weight);
