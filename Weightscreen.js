@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 const BTFacade = require('./BTFacade');
+const Buffer = require('buffer/').Buffer;
 
 var styles = StyleSheet.create({
   description: {
@@ -69,7 +70,7 @@ class Weightscreen extends Component {
       if (scannedDevice.name == 'Scale') {
         console.log(scannedDevice);
         var weightEncoded = scannedDevice.serviceData['0000181d-0000-1000-8000-00805f9b34fb'];
-        var bytes = atob(weightEncoded);
+        var bytes = new Buffer(weightEncoded, 'base64').toString();
         if (bytes.charCodeAt(1) >= 128) {
           this.setState({ lastWeight: 0.0 })
           return
